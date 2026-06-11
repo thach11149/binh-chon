@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import { createServer as createViteServer } from "vite";
 import admin from "firebase-admin";
+import { getApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
 interface PollItem {
@@ -22,7 +23,7 @@ admin.initializeApp({
   projectId: firebaseConfig.projectId
 });
 
-const firestore = getFirestore();
+const firestore = getFirestore(getApp(), firebaseConfig.firestoreDatabaseId);
 
 // Fetch all polls, seeding with original default options if empty
 async function getPolls(): Promise<PollItem[]> {

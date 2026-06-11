@@ -78,7 +78,7 @@ if (!getApps().length) {
   }
 }
 
-const firestore = getFirestore();
+const firestore = getFirestore(getApps()[0], firebaseConfig.firestoreDatabaseId);
 
 // Fetch all polls, seeding with original default options if empty
 async function getPolls(): Promise<PollItem[]> {
