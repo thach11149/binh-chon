@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import admin from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
+import firebaseConfig from "../firebase-applet-config.json";
 
 interface PollItem {
   id: string;
@@ -10,15 +11,6 @@ interface PollItem {
   createdBy: string;
   createdAt: string;
   votes: string[]; // Array of unique visitor IDs
-}
-
-// Load Firebase configuration dynamically
-const configPath = path.join(process.cwd(), "firebase-applet-config.json");
-let firebaseConfig: any = {};
-try {
-  firebaseConfig = JSON.parse(fs.readFileSync(configPath, "utf-8"));
-} catch (e) {
-  console.error("Không thể đọc file firebase-applet-config.json", e);
 }
 
 // Initialize Firebase Admin configuration
