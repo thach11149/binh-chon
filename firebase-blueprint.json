@@ -1,0 +1,38 @@
+{
+  "entities": {
+    "Poll": {
+      "title": "Poll Option",
+      "description": "A single poll option that users can vote on",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique id of the poll document"
+        },
+        "content": {
+          "type": "string",
+          "description": "The poll question or proposal content"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "The visitorId of the creator, or system"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp when the poll option was created"
+        },
+        "votes": {
+          "type": "array",
+          "description": "List of visitorIds who voted for this poll"
+        }
+      },
+      "required": ["id", "content", "createdBy", "createdAt", "votes"]
+    }
+  },
+  "firestore": {
+    "polls/{pollId}": {
+      "schema": "Poll",
+      "description": "Collection of all options available for polling"
+    }
+  }
+}

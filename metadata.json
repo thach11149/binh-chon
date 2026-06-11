@@ -1,0 +1,8 @@
+{
+  "name": "App Bình Chọn Chủ Đề",
+  "description": "Ứng dụng bình chọn nội dung và chủ đề phòng thảo luận trong thời gian thực.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
