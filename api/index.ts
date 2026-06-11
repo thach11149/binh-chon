@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import admin from "firebase-admin";
+import { initializeApp, getApps, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import firebaseConfig from "../firebase-applet-config.json";
 
@@ -14,15 +14,15 @@ interface PollItem {
 }
 
 // Initialize Firebase Admin configuration
-if (!admin.apps.length) {
+if (!getApps().length) {
   let initialized = false;
 
   // 1. Try environment variable FIREBASE_SERVICE_ACCOUNT (recommended for Vercel production)
   if (process.env.FIREBASE_SERVICE_ACCOUNT) {
     try {
       const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
+      initializeApp({
+        credential: cert(serviceAccount),
         projectId: serviceAccount.project_id
       });
       initialized = true;
@@ -35,8 +35,8 @@ if (!admin.apps.length) {
   // 2. Try individual env variables for client email and private key
   if (!initialized && process.env.FIREBASE_PRIVATE_KEY && process.env.FIREBASE_CLIENT_EMAIL) {
     try {
-      admin.initializeApp({
-        credential: admin.credential.cert({
+      initializeApp({
+        credential: cert({
           projectId: firebaseConfig.projectId || process.env.FIREBASE_PROJECT_ID,
           clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
           privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
@@ -57,8 +57,8 @@ if (!admin.apps.length) {
     if (fs.existsSync(serviceAccountPath)) {
       try {
         const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, "utf-8"));
-        admin.initializeApp({
-          credential: admin.credential.cert(serviceAccount),
+        initializeApp({
+          credential: cert(serviceAccount),
           projectId: serviceAccount.project_id
         });
         initialized = true;
@@ -71,7 +71,7 @@ if (!admin.apps.length) {
 
   // 4. Fallback to default credentials / project ID only (works on Cloud Run)
   if (!initialized) {
-    admin.initializeApp({
+    initializeApp({
       projectId: firebaseConfig.projectId
     });
     console.log("Firebase Admin initialized via project ID fallback.");
